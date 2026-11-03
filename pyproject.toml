@@ -1,0 +1,20 @@
+[project]
+name = "youtube-insights"
+version = "0.1.0"
+description = "Read-only MCP-сервер для аналитики своего YouTube-канала"
+requires-python = ">=3.15"
+dependencies = []
+
+[project.scripts]
+youtube-insights = "youtube_insights.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.8"]
+
+[build-system]
+requires = ["uv_build>=0.8,<0.14"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+extend-exclude = ["docs"]
