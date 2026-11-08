@@ -1,5 +1,7 @@
 """Константы: адреса и scope Google, имена файлов, параметры сервера."""
 
+from importlib.metadata import version
+
 # Google OAuth
 AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
@@ -26,4 +28,4 @@ LOGIN_TIMEOUT = 300
 
 # MCP-сервер
 SERVER_NAME = "youtube-insights"
-SERVER_VERSION = "0.1.0"
+SERVER_VERSION = version(SERVER_NAME)  # из pyproject.toml, один источник
