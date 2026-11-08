@@ -68,12 +68,17 @@ YOUTUBE_SECRETS_DIR=~/.config/youtube-insights uv run youtube-insights auth
 | Удержание видео | `metrics=audienceWatchRatio`, `dimensions=elapsedVideoTimeRatio`, `filters=video==ID` |
 | Источники трафика | `metrics=views`, `dimensions=insightTrafficSourceType`, `sort=-views` |
 | Демография | `metrics=viewerPercentage`, `dimensions=ageGroup,gender` |
+| Доход по дням | `metrics=estimatedRevenue,monetizedPlaybacks,playbackBasedCpm`, `dimensions=day`, `currency=EUR` |
+| Поисковые запросы | `metrics=views`, `dimensions=insightTrafficSourceDetail`, `filters=insightTrafficSourceType==YT_SEARCH`, `sort=-views`, `max_results=25` |
+| Подписчики против остальных | `metrics=views,averageViewPercentage`, `dimensions=subscribedStatus` |
+| Весь архив видео | `metrics=views`, `dimensions=video`, `sort=-views`, `max_results=200`, затем `start_index=201` |
 
 Недопустимое сочетание Google отклонит, текст ошибки вернётся модели.
 
 ## Ограничения
 
-- **Показы и CTR обложек.** На странице метрик Analytics API их нет, эти цифры по-прежнему берутся из Studio.
+- **Показы и CTR обложек.** В YouTube Analytics API их нет. Они есть в YouTube Reporting API (отчёты `channel_reach_basic_a1`, `channel_reach_combined_a1`), но тот требует один POST для создания задания и отдаёт CSV раз в сутки. Сюда не включены, цифры пока из Studio.
+- **Доход.** Данные приходят только каналам в партнёрской программе; остальным Google вернёт ошибку или пустой отчёт. Нужен scope `yt-analytics-monetary.readonly` (только чтение) и повторный `auth` после обновления.
 - **Субтитры.** `captions.list` требует `youtube.force-ssl`, а этот scope даёт право на изменение и удаление, поэтому субтитры не включены.
 - **Комментарии.** Не включены. Документация методов не указывает нужный scope, работа с `youtube.readonly` не проверялась.
 - **Режим Testing.** Пока проект Google в этом режиме, вход приходится повторять раз в 7 дней. Перевод в Production снимает ограничение, Google покажет предупреждение о непроверенном приложении.
