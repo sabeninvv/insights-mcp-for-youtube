@@ -48,14 +48,20 @@ def test_get_drops_none_and_sends_bearer(monkeypatch):
     assert seen == {"url": "https://x/y?a=1", "auth": "Bearer tok"}
 
 
-def test_analytics_rows_as_dicts(monkeypatch):
+def test_analytics_rows_as_dicts_and_passes_paging(monkeypatch):
+    """Строки отчёта становятся словарями, start_index и currency уходят в Google."""
     report = {"columnHeaders": [{"name": "day"}, {"name": "views"}], "rows": [["2026-11-01", 5]]}
-    monkeypatch.setattr(google, "get", lambda url, **params: report)
-    rows = server.analytics("2026-11-01", "2026-11-02", "views", dimensions="day")
+    sent = {}
+    monkeypatch.setattr(google, "get", lambda url, **params: sent.update(params) or report)
+    rows = server.analytics(
+        "2026-11-01", "2026-11-02", "views", dimensions="day", start_index=201, currency="EUR"
+    )
     assert rows == [{"day": "2026-11-01", "views": 5}]
+    assert (sent["startIndex"], sent["currency"]) == (201, "EUR")
 
 
 def test_serve_speaks_newline_json(monkeypatch, capsys):
+    """Обмен по stdio построчным JSON; в схеме analytics есть подсказки и start_index."""
     monkeypatch.setattr(google, "get", lambda url, **params: {"items": [{"id": "UC1"}]})
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "v"}},
@@ -76,6 +82,11 @@ def test_serve_speaks_newline_json(monkeypatch, capsys):
     assert replies[0]["result"]["protocolVersion"] == "v"
     names = {tool["name"] for tool in replies[1]["result"]["tools"]}
     assert names == {"channel", "videos", "video", "analytics"}
+    analytics_schema = next(t for t in replies[1]["result"]["tools"] if t["name"] == "analytics")
+    hints = analytics_schema["inputSchema"]["properties"]
+    assert "estimatedRevenue" in hints["metrics"]["description"]
+    assert "insightTrafficSourceDetail" in hints["dimensions"]["description"]
+    assert "start_index" in hints
     assert json.loads(replies[2]["result"]["content"][0]["text"]) == {"id": "UC1"}
     assert replies[3]["result"]["isError"] is True
 
@@ -116,6 +127,7 @@ def test_token_is_private_before_secret_is_written(secrets, monkeypatch):
 
 
 def test_login_asks_only_readonly_and_rejects_wrong_state(secrets, monkeypatch):
+    """Вход просит только три read-only scope и не меняет код при чужом state."""
     opened = {}
 
     def browser(url):
@@ -130,5 +142,6 @@ def test_login_asks_only_readonly_and_rejects_wrong_state(secrets, monkeypatch):
     assert opened["scope"][0].split() == [
         "https://www.googleapis.com/auth/youtube.readonly",
         "https://www.googleapis.com/auth/yt-analytics.readonly",
+        "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
     ]
     assert not (secrets / "token.json").exists()

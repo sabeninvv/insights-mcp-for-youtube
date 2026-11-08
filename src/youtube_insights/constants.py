@@ -5,14 +5,15 @@ AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 SCOPES = (
     "https://www.googleapis.com/auth/youtube.readonly "
-    "https://www.googleapis.com/auth/yt-analytics.readonly"
+    "https://www.googleapis.com/auth/yt-analytics.readonly "
+    "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
 )
 
 # YouTube API
 DATA_API = "https://www.googleapis.com/youtube/v3"
 ANALYTICS_API = "https://youtubeanalytics.googleapis.com/v2/reports"
 CHANNEL_PARTS = "snippet,statistics,contentDetails"
-VIDEO_PARTS = "snippet,statistics,contentDetails,status"
+VIDEO_PARTS = "snippet,statistics,contentDetails,status,liveStreamingDetails"
 
 # Секреты
 SECRETS_DIR_ENV = "YOUTUBE_SECRETS_DIR"
