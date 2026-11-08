@@ -49,6 +49,7 @@ def test_get_drops_none_and_sends_bearer(monkeypatch):
 
 
 def test_analytics_rows_as_dicts_and_passes_paging(monkeypatch):
+    """Строки отчёта становятся словарями, start_index и currency уходят в Google."""
     report = {"columnHeaders": [{"name": "day"}, {"name": "views"}], "rows": [["2026-11-01", 5]]}
     sent = {}
     monkeypatch.setattr(google, "get", lambda url, **params: sent.update(params) or report)
@@ -60,6 +61,7 @@ def test_analytics_rows_as_dicts_and_passes_paging(monkeypatch):
 
 
 def test_serve_speaks_newline_json(monkeypatch, capsys):
+    """Обмен по stdio построчным JSON; в схеме analytics есть подсказки и start_index."""
     monkeypatch.setattr(google, "get", lambda url, **params: {"items": [{"id": "UC1"}]})
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "v"}},
@@ -125,6 +127,7 @@ def test_token_is_private_before_secret_is_written(secrets, monkeypatch):
 
 
 def test_login_asks_only_readonly_and_rejects_wrong_state(secrets, monkeypatch):
+    """Вход просит только три read-only scope и не меняет код при чужом state."""
     opened = {}
 
     def browser(url):
