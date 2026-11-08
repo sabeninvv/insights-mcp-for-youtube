@@ -124,8 +124,11 @@ TOOLS: list[tuple[Callable[..., object], dict]] = [
                         "averageTimeInPlaylist, playlistSaves. "
                         "Удержание (только с dimensions=elapsedVideoTimeRatio и "
                         "filters=video==ID): "
-                        "audienceWatchRatio, relativeRetentionPerformance, startedWatching, "
-                        "stoppedWatching. Демография: viewerPercentage (с dimensions ageGroup "
+                        "audienceWatchRatio (доля смотрящих в точке, бывает > 1 из-за "
+                        "пересмотров), totalSegmentImpressions "
+                        "(сколько раз смотрели сегмент), relativeRetentionPerformance (0..1 против "
+                        "похожих по длине, медиана 0.5), startedWatching, stoppedWatching. "
+                        "Демография: viewerPercentage (с dimensions ageGroup "
                         "и/или gender). Показов обложек и CTR в этом API нет."
                     ),
                 },
@@ -145,7 +148,11 @@ TOOLS: list[tuple[Callable[..., object], dict]] = [
                         "Где смотрят: insightPlaybackLocationType, insightPlaybackLocationDetail "
                         "(только с filters=insightPlaybackLocationType==EMBEDDED). "
                         "Устройства: deviceType, operatingSystem. Шеринг: sharingService. "
-                        "Удержание: elapsedVideoTimeRatio (100 точек, требует filters=video==ID). "
+                        "Удержание: elapsedVideoTimeRatio (100 точек по доле длины 0.01..1.0, "
+                        "секунды = доля × duration из video, ISO 8601: PT1M30S = 90 с; "
+                        "требует filters=video==ID, одно "
+                        "видео; доп. фильтры audienceType==ORGANIC|AD_INSTREAM|AD_INDISPLAY, "
+                        "subscribedStatus, youtubeProduct). "
                         "Эфир по минутам: livestreamPosition. Реклама: adType."
                     ),
                 },

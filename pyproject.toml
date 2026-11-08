@@ -1,6 +1,6 @@
 [project]
 name = "youtube-insights"
-version = "1.0.0"
+version = "1.0.1"
 description = "Read-only MCP-сервер для аналитики своего YouTube-канала"
 requires-python = ">=3.15"
 dependencies = []

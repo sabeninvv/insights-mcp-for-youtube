@@ -86,6 +86,8 @@ def test_serve_speaks_newline_json(monkeypatch, capsys):
     hints = analytics_schema["inputSchema"]["properties"]
     assert "estimatedRevenue" in hints["metrics"]["description"]
     assert "insightTrafficSourceDetail" in hints["dimensions"]["description"]
+    assert "totalSegmentImpressions" in hints["metrics"]["description"]
+    assert "audienceType" in hints["dimensions"]["description"]
     assert "start_index" in hints
     assert json.loads(replies[2]["result"]["content"][0]["text"]) == {"id": "UC1"}
     assert replies[3]["result"]["isError"] is True

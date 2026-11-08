@@ -65,7 +65,7 @@ YOUTUBE_SECRETS_DIR=~/.config/youtube-insights uv run youtube-insights auth
 | Канал по дням | `metrics=views,estimatedMinutesWatched,subscribersGained`, `dimensions=day` |
 | Топ видео | `metrics=views,estimatedMinutesWatched`, `dimensions=video`, `sort=-views`, `max_results=10` |
 | Shorts и другие форматы | `metrics=views,engagedViews`, `dimensions=day,creatorContentType` |
-| Удержание видео | `metrics=audienceWatchRatio`, `dimensions=elapsedVideoTimeRatio`, `filters=video==ID` |
+| Удержание видео | `metrics=audienceWatchRatio,totalSegmentImpressions`, `dimensions=elapsedVideoTimeRatio`, `filters=video==ID` (точка = доля длины видео, секунды = доля × `contentDetails.duration` из `video`) |
 | Источники трафика | `metrics=views`, `dimensions=insightTrafficSourceType`, `sort=-views` |
 | Демография | `metrics=viewerPercentage`, `dimensions=ageGroup,gender` |
 | Доход по дням | `metrics=estimatedRevenue,monetizedPlaybacks,playbackBasedCpm`, `dimensions=day`, `currency=EUR` |
