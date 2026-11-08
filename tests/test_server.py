@@ -48,11 +48,15 @@ def test_get_drops_none_and_sends_bearer(monkeypatch):
     assert seen == {"url": "https://x/y?a=1", "auth": "Bearer tok"}
 
 
-def test_analytics_rows_as_dicts(monkeypatch):
+def test_analytics_rows_as_dicts_and_passes_paging(monkeypatch):
     report = {"columnHeaders": [{"name": "day"}, {"name": "views"}], "rows": [["2026-11-01", 5]]}
-    monkeypatch.setattr(google, "get", lambda url, **params: report)
-    rows = server.analytics("2026-11-01", "2026-11-02", "views", dimensions="day")
+    sent = {}
+    monkeypatch.setattr(google, "get", lambda url, **params: sent.update(params) or report)
+    rows = server.analytics(
+        "2026-11-01", "2026-11-02", "views", dimensions="day", start_index=201, currency="EUR"
+    )
     assert rows == [{"day": "2026-11-01", "views": 5}]
+    assert (sent["startIndex"], sent["currency"]) == (201, "EUR")
 
 
 def test_serve_speaks_newline_json(monkeypatch, capsys):

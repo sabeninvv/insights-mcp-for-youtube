@@ -54,8 +54,13 @@ def analytics(
     filters: str | None = None,
     sort: str | None = None,
     max_results: int | None = None,
+    start_index: int | None = None,
+    currency: str | None = None,
 ) -> list[dict]:
-    """Отчёт YouTube Analytics по своему каналу; строки возвращаются как словари."""
+    """Отчёт YouTube Analytics по своему каналу; строки возвращаются как словари.
+
+    start_index листает длинные отчёты (с 1), currency влияет только на денежные метрики.
+    """
     report = google.get(
         ANALYTICS_API,
         ids="channel==MINE",
@@ -66,6 +71,8 @@ def analytics(
         filters=filters,
         sort=sort,
         maxResults=max_results,
+        startIndex=start_index,
+        currency=currency,
     )
     names = [column["name"] for column in report["columnHeaders"]]
     return [dict(zip(names, row, strict=True)) for row in report.get("rows", [])]
@@ -123,6 +130,17 @@ TOOLS: list[tuple[Callable[..., object], dict]] = [
                 },
                 "sort": {"type": "string", "description": "Например -views"},
                 "max_results": {"type": "integer", "minimum": 1, "maximum": 200},
+                "start_index": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Номер первой строки (с 1), для листания вместе с max_results",
+                },
+                "currency": {
+                    "type": "string",
+                    "description": (
+                        "ISO 4217, например EUR; только для денежных метрик, по умолчанию USD"
+                    ),
+                },
             },
             "required": ["start_date", "end_date", "metrics"],
         },
