@@ -13,7 +13,7 @@ SCOPES = (
 DATA_API = "https://www.googleapis.com/youtube/v3"
 ANALYTICS_API = "https://youtubeanalytics.googleapis.com/v2/reports"
 CHANNEL_PARTS = "snippet,statistics,contentDetails"
-VIDEO_PARTS = "snippet,statistics,contentDetails,status"
+VIDEO_PARTS = "snippet,statistics,contentDetails,status,liveStreamingDetails"
 
 # Секреты
 SECRETS_DIR_ENV = "YOUTUBE_SECRETS_DIR"

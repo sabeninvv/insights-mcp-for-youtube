@@ -109,19 +109,44 @@ TOOLS: list[tuple[Callable[..., object], dict]] = [
                 "metrics": {
                     "type": "string",
                     "description": (
-                        "Через запятую: views, engagedViews, estimatedMinutesWatched, "
-                        "averageViewDuration, averageViewPercentage, likes, comments, shares, "
-                        "subscribersGained, subscribersLost; audienceWatchRatio только вместе "
-                        "с dimensions=elapsedVideoTimeRatio; viewerPercentage только вместе "
-                        "с dimensions=ageGroup,gender"
+                        "Через запятую. Просмотры: views, engagedViews, redViews, "
+                        "estimatedMinutesWatched, averageViewDuration, averageViewPercentage. "
+                        "Вовлечённость: likes, dislikes, comments, shares, subscribersGained, "
+                        "subscribersLost, videosAddedToPlaylists, videosRemovedFromPlaylists. "
+                        "Доход (нужен scope monetary, канал в партнёрке): estimatedRevenue, "
+                        "estimatedAdRevenue, estimatedRedPartnerRevenue, grossRevenue, cpm, "
+                        "playbackBasedCpm, adImpressions, monetizedPlaybacks. "
+                        "Подсказки: cardImpressions, cardClicks, cardClickRate, "
+                        "cardTeaserImpressions, cardTeaserClicks, cardTeaserClickRate. "
+                        "Эфиры: averageConcurrentViewers, peakConcurrentViewers. "
+                        "Плейлисты (с dimensions=playlist или filters=playlist==ID): "
+                        "playlistStarts, playlistViews, viewsPerPlaylistStart, "
+                        "averageTimeInPlaylist, playlistSaves. "
+                        "Удержание (только с dimensions=elapsedVideoTimeRatio и "
+                        "filters=video==ID): "
+                        "audienceWatchRatio, relativeRetentionPerformance, startedWatching, "
+                        "stoppedWatching. Демография: viewerPercentage (с dimensions ageGroup "
+                        "и/или gender). Показов обложек и CTR в этом API нет."
                     ),
                 },
                 "dimensions": {
                     "type": "string",
                     "description": (
-                        "Через запятую: day, month, video, creatorContentType, "
-                        "insightTrafficSourceType, deviceType, ageGroup, gender, country, "
-                        "elapsedVideoTimeRatio (кривая удержания, требует filters=video==ID)"
+                        "Через запятую. Время: day, month (даты строго первое число месяца). "
+                        "Контент: video (нужен sort, max_results не больше 200), playlist, "
+                        "creatorContentType (VIDEO_ON_DEMAND, SHORTS, LIVE_STREAM, STORY), "
+                        "liveOrOnDemand, youtubeProduct. "
+                        "Аудитория: subscribedStatus, ageGroup, gender, country, province (только "
+                        "с filters=country==US), city. "
+                        "Трафик: insightTrafficSourceType; insightTrafficSourceDetail (поисковые "
+                        "запросы, внешние сайты, видео-источники) только с "
+                        "filters=insightTrafficSourceType==YT_SEARCH|EXT_URL|RELATED_VIDEO|"
+                        "SUBSCRIBER|YT_CHANNEL|ADVERTISING и max_results не больше 25. "
+                        "Где смотрят: insightPlaybackLocationType, insightPlaybackLocationDetail "
+                        "(только с filters=insightPlaybackLocationType==EMBEDDED). "
+                        "Устройства: deviceType, operatingSystem. Шеринг: sharingService. "
+                        "Удержание: elapsedVideoTimeRatio (100 точек, требует filters=video==ID). "
+                        "Эфир по минутам: livestreamPosition. Реклама: adType."
                     ),
                 },
                 "filters": {

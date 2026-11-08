@@ -80,6 +80,11 @@ def test_serve_speaks_newline_json(monkeypatch, capsys):
     assert replies[0]["result"]["protocolVersion"] == "v"
     names = {tool["name"] for tool in replies[1]["result"]["tools"]}
     assert names == {"channel", "videos", "video", "analytics"}
+    analytics_schema = next(t for t in replies[1]["result"]["tools"] if t["name"] == "analytics")
+    hints = analytics_schema["inputSchema"]["properties"]
+    assert "estimatedRevenue" in hints["metrics"]["description"]
+    assert "insightTrafficSourceDetail" in hints["dimensions"]["description"]
+    assert "start_index" in hints
     assert json.loads(replies[2]["result"]["content"][0]["text"]) == {"id": "UC1"}
     assert replies[3]["result"]["isError"] is True
 
