@@ -130,5 +130,6 @@ def test_login_asks_only_readonly_and_rejects_wrong_state(secrets, monkeypatch):
     assert opened["scope"][0].split() == [
         "https://www.googleapis.com/auth/youtube.readonly",
         "https://www.googleapis.com/auth/yt-analytics.readonly",
+        "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
     ]
     assert not (secrets / "token.json").exists()

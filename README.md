@@ -1,6 +1,6 @@
 # youtube-insights
 
-Локальный MCP-сервер для аналитики своего YouTube-канала. Только чтение: два read-only scope, GET-запросы к API Google, ноль зависимостей. Данные идут напрямую между вашим компьютером и Google.
+Локальный MCP-сервер для аналитики своего YouTube-канала. Только чтение: три read-only scope, GET-запросы к API Google, ноль зависимостей. Данные идут напрямую между вашим компьютером и Google.
 
 Инструменты: `channel`, `videos`, `video`, `analytics`.
 
@@ -31,12 +31,14 @@ mv ~/Downloads/client_secret_*.json ~/.config/youtube-insights/client_secret.jso
 YOUTUBE_SECRETS_DIR=~/.config/youtube-insights uv run youtube-insights auth
 ```
 
-На экране Google должны быть только два разрешения:
+На экране Google должны быть только три разрешения:
 
 - View your YouTube account
 - View YouTube Analytics reports for your YouTube content
+- View monetary and non-monetary YouTube Analytics reports for your YouTube content
 
 Если видите «edit», «delete» или «manage», остановитесь и не подтверждайте.
+Если вход уже выполнялся, повторите `auth`: старый токен выдан на два разрешения, и Google откажет в денежных метриках.
 
 ## Подключение к Claude Desktop
 

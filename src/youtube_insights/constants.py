@@ -5,7 +5,8 @@ AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = "https://oauth2.googleapis.com/token"
 SCOPES = (
     "https://www.googleapis.com/auth/youtube.readonly "
-    "https://www.googleapis.com/auth/yt-analytics.readonly"
+    "https://www.googleapis.com/auth/yt-analytics.readonly "
+    "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
 )
 
 # YouTube API
